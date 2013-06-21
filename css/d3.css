@@ -1,0 +1,36 @@
+html {
+  min-width: 1040px;
+}
+
+body {
+  position: relative;
+  font-family:'Lucida Grande', 'Lucida Sans Unicode', Tahoma, Arial, san-serif;
+  margin: 1em auto 4em auto;
+  width: 960px;
+}
+
+header aside,
+footer aside {
+  color: #636363;
+  text-align: right;
+}
+
+aside {
+  font-size: small;
+  left: 780px;
+  position: absolute;
+  width: 180px;
+}
+
+circle.node {
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+line.link {
+  stroke: #999;
+  stroke-opacity: .6;
+}
+
+
+.nodetext { pointer-events: none; font: 10px sans-serif; }

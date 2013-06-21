@@ -1,0 +1,348 @@
+
+<html>
+
+<head>
+
+	<title>MAATIE | A new statistical tool</title>
+
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+
+	<!-- Stylesheets -->
+
+	<link rel="stylesheet" href="css/reset.css" />
+	<link rel='stylesheet' href='css/styles.css' />
+
+
+	<!-- Scripts -->
+
+	<!-- Add jQuery library -->
+
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+
+
+	<!-- Add fancyBox (NOT IN USE AT THE MOMENT) -->
+
+	<link rel="stylesheet" href="js/jquery.fancybox.css" type="text/css" media="screen" />
+	<script type="text/javascript" src="js/jquery.fancybox.pack.js"></script>
+
+
+	<script type="text/javascript">
+
+		$(document).ready(function() {
+			$(".fancybox").fancybox();
+		});
+
+	</script>
+
+
+	<!-- D3 scripts) -->
+	<script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?2.4.6"></script>
+	
+
+
+</head>
+
+<body>
+
+	<script type="text/javascript" src="http://ec2-122-248-225-29.ap-southeast-1.compute.amazonaws.com/js/tooltip.js"></script>
+
+	<div id='wrapper' class='container_12 clearfix'>
+
+	<a href='index.html'><img align='left' width='234' height='45' style="padding-top:40px;padding-left:20px;" src='images/logo.png' ></a>
+
+
+		<!-- Navigation Menu -->
+
+		<ul id='navigation' class='grid_8'>
+
+			
+
+			<li><a href='contact.html'><span class='meta'>Get in touch</span><br />Contact us</a></li>
+			<li><a href='news.html'><span class='meta'>Citations</span><br />News</a></li>
+			<li><a href='help.html'><span class='meta'>Formatting</span><br />Help</a></li>				
+			<li><a href='about.html'><span class='meta'>The method</span><br />About</a></li>
+			<li><a href='index.html' class='current'><span class='meta'>Analyze data</span><br />Upload</a></li>
+
+			
+
+		</ul>
+
+		
+
+		<div class='hr grid_12'>&nbsp;</div>
+		<div class='clear'></div>
+
+
+		<!-- Caption Line -->
+
+		<h4 class='grid_12 caption clearfix' align="left" >Introducing <span>Maatie</span>, a new way of understanding your data. <br />Upload your data now to have it analyzed.</h4> 
+		   
+
+		<div id='FDG' style="margin-left:680px;padding-top:0px;padding-bottom:0px;position:absolute;" width='180' height='232'> 
+
+
+		<!-- Animation -->
+		
+		<script type="text/javascript">
+
+										
+
+				function animate()
+				{
+
+					
+					document.getElementsByName('linkthresh')[0].value=1;
+					document.getElementsByName('charge')[0].value=50;
+					document.getElementsByName('gravity')[0].value=0.2;
+					updateData();
+					force.linkStrength(1)
+						.linkDistance(0)
+						.start();
+					document.getElementsByName('gravity')[0].value=0.2;
+					document.getElementsByName('charge')[0].value=200;
+					setTimeout(function() {updateData();},2000);										
+					setTimeout(function() {document.getElementsByName('charge')[0].value=200;updateData();},3000);
+
+					setTimeout(function() {
+
+						updateData();
+
+						var t = 0;
+						var t1 = 0;
+						var last = 0;
+
+						d3.timer(function(elapsed) {
+
+						  t1 = (t1 + (elapsed - last) / 10000);
+
+						  t = t1 % 1.2;
+
+						  last = elapsed;
+
+						  vis.selectAll("line.link")
+							.style("stroke-opacity", function(d) { return d.value>(1.1-t) ? d.value : 0; });
+
+						force.linkStrength(function(d) {  return d.value>(1.07-t) ? ( (t>1.1 ? 1 : Math.sqrt(d.value))*document.getElementsByName('strengthdiv')[0].value) : 0; })
+							.linkDistance(function(d) {return ((t>1.1 ? 0: 10)/(d.value+0.05));})
+							.start();		
+
+						return t1>3.49;
+
+						});
+
+					},4000);
+
+					
+
+					
+
+				}
+
+				
+
+				function updateData() {
+					vis.selectAll("line.link")
+					.style("stroke-opacity", function(d) { return d.value>document.getElementsByName('linkthresh')[0].value ? d.value : 0; });
+
+					force.gravity(document.getElementsByName('gravity')[0].value)
+					.linkDistance(function(d) {return (document.getElementsByName('distance')[0].value/(d.value+0.05));})
+					.charge(-1*document.getElementsByName('charge')[0].value)
+					.linkStrength(function(d) {  return d.value>document.getElementsByName('linkthresh')[0].value ? (Math.sqrt(d.value))*document.getElementsByName('strengthdiv')[0].value : 0;})
+					.start();
+				}							
+
+				
+
+				var c = d3.scale.linear()
+				.domain([0, 1])
+				.range(["blue" , "red" ]);   //Scale all links between blue and red using this function that takes number between 0-1 and maps to colour inbetween b/r
+
+
+				var w = 300, h = 300
+
+
+
+				var vis = d3.select("#FDG").append("svg:svg")
+					.attr("width", w)		 
+					.attr("height", h)
+					.append('svg:g')  
+					.append('svg:g');
+
+
+				  function redraw() 
+				  {
+
+					  console.log("here", d3.event.translate, d3.event.scale);
+					  vis.attr("transform",
+						  "translate(" + d3.event.translate + ")"
+						  + " scale(" + d3.event.scale + ")");
+					}
+
+
+				//Other: adj3.json or huge.json
+
+				d3.json("adj3.json", function(json) {
+
+					var force = self.force = d3.layout.force()
+						.nodes(json.nodes)
+						.links(json.links)
+						.gravity(document.getElementsByName('gravity')[0].value)												
+						.charge(-1*(document.getElementsByName('charge')[0].value))
+						.linkDistance(function(d) {return (document.getElementsByName('distance')[0].value/(d.value+0.05));})
+						.linkStrength(function(d) {  return (Math.sqrt(d.value))*document.getElementsByName('strengthdiv')[0].value;})					 
+						.size([w, h])
+						.start();
+
+
+
+					var link = vis.selectAll("line.link")
+						.data(json.links)
+						.enter().append("svg:line")
+						.attr("class", "link")
+						.style("stroke", function(d) { return c(d.nonlin); })
+						.style("stroke-width", function(d) { return Math.sqrt(d.value)*4; })
+						.style("stroke-opacity", function(d) { return d.value; })					
+						.attr("x1", function(d) { return d.source.x; })
+
+						.attr("y1", function(d) { return d.source.y; })
+
+						.attr("x2", function(d) { return d.target.x; })
+
+						.attr("y2", function(d) { return d.target.y; });
+					
+					var node = vis.selectAll("g.node")
+						.data(json.nodes)
+						.enter().append("svg:g")
+						.attr("class", "node")
+						.call(force.drag);
+						 node.append("svg:image")
+						.attr("class", "circle")
+						.attr("xlink:href", "http://ec2-122-248-225-29.ap-southeast-1.compute.amazonaws.com/images/node.png")
+						.attr("x", "-8px")
+						.attr("y", "-8px")
+						.attr("width", "16px")
+						.attr("height", "16px");
+
+
+						node.append("svg:text")
+						.attr("class", "nodetext")
+						.attr("dx", 8)
+						.attr("dy", ".35em")
+						.text(function(d) { return d.name });
+
+					force.on("tick", function() {
+					  link.attr("x1", function(d) { return d.source.x; })
+						  .attr("y1", function(d) { return d.source.y; })
+						  .attr("x2", function(d) { return d.target.x; })
+						  .attr("y2", function(d) { return d.target.y; });
+
+					  node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+
+					});
+
+				animate();	
+
+				});
+
+			</script>
+
+									
+				<input type="range" style="display:none" name ="fixedbool" min="0" max="1" value="0" step="1" onchange="animate();" />
+				<input type="range" style="display:none" name ="linkthresh" min="0" max="1" value="0" step="0.01" onchange="updateData(); showValueP(this.value)" />
+				<input type="range" style="display:none" name ="distance" min="5" max="500" value="10" step="1" onchange="updateData(); showValueL(this.value)" />
+				<input type="range" style="display:none"  name ="gravity" min="0" max="0.5" value="0.05" step="0.01" onchange="updateData(); showValueG(this.value)" />
+				<input type="range" style="display:none" name ="strengthdiv" min="0" max="1" value="0.3" step="0.01" onchange="updateData(); showValueD(this.value)" />
+				<input type="range" style="display:none" name ="charge" min="0" max="1000" value="100" step="1" onchange="updateData(); showValueR(this.value)" />
+
+
+							</div>
+
+		<br />		
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+
+	<!-- Uploader -->
+	<div class='custom_file_upload'  >
+
+
+		<form enctype='multipart/form-data' action='save_fileTWO.py'  method='post'>
+			<input type="hidden" name="MAX_FILE_SIZE" value="12800" />
+			<input type='file' class='file' name='file' ">
+
+
+			<div class='file_upload' onmouseover="Tip('Your data will be uploaded to our server if it is correctly formatted. A preprocessing page with options and relevant warnings will be shown before any tests are run on your data. ',  FADEIN, 300, WIDTH, 150, FONTSIZE, '9px')" onmouseout="UnTip()" >
+				<!--input type='submit' value='Upload' id='file_upload' name='file_upload' onclick="document.getElementById('load').style.display = 'block'; document.getElementById('now').style.display='none'; " -->
+				<input type='submit' value='Upload' width='200' id='file_upload' name='file_upload' onclick="document.getElementById('ok').src = 'images/uploader.gif'" onmouseover="document.getElementById('ok').src = 'images/uploader.gif'" onmouseout="document.getElementById('ok').src = 'images/uploadbar.png'">
+
+			</div>
+
+		</form>
+
+	</div>
+
+	
+
+
+		<p align="center" style="padding-right:300px"><span class='meta'>Size limit 10kb. Only .csv files supported. <a href="help.html">Click here for help.</a> <br />Example data:  <a   onmouseover="Tip('Download this data to your desktop, then reupload it here to have an example run.',  FADEIN, 300, WIDTH, 150, FONTSIZE, '9px')" onmouseout="UnTip()" href='examples/baseballdat.csv' class='info' >baseballdat.csv</a> , <a <a   onmouseover="Tip('Download this data to your desktop, then reupload it here to have an example run.',  FADEIN, 300, WIDTH, 150, FONTSIZE, '9px')" onmouseout="UnTip()" href='examples/iris.csv' class='info' >iris.csv</a> </span></p>
+
+
+
+		<br />
+
+		
+		<!-- Caption Line -->
+
+		<h2 class="grid_12 caption">How does it work?</h2>
+		<div class="hr grid_12 clearfix">&nbsp;</div>
+
+
+		<!-- Column 1 / Content -->
+
+		<div class="grid_8">
+			<h4 class="page_title">The Maatie Algorithm</h4>
+			<div class="hr dotted clearfix">&nbsp;</div>
+			<div id='noww'><a class='fancybox' href='images/home.png'><img alt='' align='left' src='images/home.png' width='159' height='82' /></a> </div> 
+			<p >Maatie detects associations between variables, regardless of the form of the association. This webserver computes the estimate of association between all pairs of variables. The output is downloadable as a spreadsheet, and vizualizations are provided. Try out some examples here, or click here to take a tour.</p>
+
+		</div>
+
+
+
+		<!-- Column 2 / Sidebar -->
+
+		<div class="grid_4">
+
+			<h4 class="page_title">More information</h4>
+			<div class="hr dotted clearfix">&nbsp;</div>
+			<dl class="history"> 
+				<p><i>Visit <a href='about.html'>About</a> to view papers on the method and server, and for a full list of contributors. Get <a href='help.html'>Help</a> if you're having problem uploading data, or viewing your results. View updates and recent <a href='news.html'>news</a>. <a href='contact.html'>Contact us</a> with your comments or suggestions. </i>
+
+		</p>
+
+			<p></p> 
+
+			</dl>
+
+		</div>
+
+		
+
+		<div class="hr grid_12 clearfix">&nbsp;</div>
+
+		<!-- Footer -->
+
+				<p class='grid_12 footer clearfix'>
+			<span class='float'><b>&copy; Website design by</b> <a href='http://www.rmoola.com'>Riaz Moola</a>, <b>Images by</b> <a href="http://alexanderblv.tumblr.com/">Alexander Bielovich</a>.</span>
+	
+		</p>
+
+	</div><!--end wrapper-->
+
+</body>
+
+</html>

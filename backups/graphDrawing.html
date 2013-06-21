@@ -1,0 +1,337 @@
+<html>
+<head>
+
+	<script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?2.4.6"></script>
+<link href='http://mbostock.github.com/d3/ex/force.css' rel='stylesheet' type='text/css' /><script src='http://mbostock.github.com/d3/d3.layout.js?2.4.6' type='text/javascript'> </script><script src='http://mbostock.github.com/d3/d3.geom.js?2.4.6' type='text/javascript'></script>
+
+
+</head>
+<body>
+<div id='FDG' style="text-align: center;">  
+
+
+							
+										
+							
+										<script type="text/javascript">
+										
+										//var threshold = (document.getElementsByName('threshold')[0].value);
+										
+										function updateData() 
+										{
+									
+											/*d3.select("#FDG svg g").remove();
+											
+											//d3.select("#FDG svg g g ").remove();
+											//d3.select("#FDG svg g g g").remove();
+											
+											
+											var vis = d3.select("#FDG svg").append("svg:svg")
+											.attr("width", w)		 
+											.attr("height", h)
+											.attr("pointer-events", "all")     //Setup pointer events
+											.append('svg:g')  
+											.call(d3.behavior.zoom().on("zoom", redraw))
+											.append('svg:g');
+											
+										
+											//Append a rectangle behind the g to recieve the mouse scroll events (otherwise only works over nodes/links
+											
+											vis.append('svg:rect')
+											.attr('width', w)
+											.attr('height', h)
+											.attr('fill', 'white');
+											
+											
+											
+										
+											
+											
+											//Append a rectangle behind the g to recieve the mouse scroll events (otherwise only works over nodes/links
+											
+										
+
+											//function that calls on zoom
+												//function that calls on zoom
+										  function redraw() 
+										  {
+											  console.log("here", d3.event.translate, d3.event.scale);
+											  vis.attr("transform",
+												  "translate(" + d3.event.translate + ")"
+												  + " scale(" + d3.event.scale + ")");
+											}
+											
+											
+											
+										d3.json("adj3.json", function(json) {
+											var force = self.force = d3.layout.force()
+												.nodes(json.nodes)
+												.links(json.links)
+												.gravity((document.getElementsByName('gravity')[0].value))											
+												.charge(-1*(document.getElementsByName('charge')[0].value))
+												.linkDistance(function(d) {return ((document.getElementsByName('distance')[0].value)/(d.value+0.05));})
+												.linkStrength(function(d) {  return d.value > (document.getElementsByName('threshold')[0].value) ? (Math.sqrt(d.value))/(document.getElementsByName('strengthdiv')[0].value) : 0;})													 
+												.size([w, h])
+												.start();
+
+											var link = vis.selectAll("line.link")
+												.data(json.links)
+												.enter().append("svg:line")
+												.attr("class", "link")
+												.style("stroke", function(d) { return c(d.nonlin); })
+												.style("stroke-width", function(d) { return Math.sqrt(d.value)*4; })
+												//.style("stroke-opacity", function(d) { return d.value; })
+												
+												.style("stroke-opacity", function(d) {return d.value > (document.getElementsByName('threshold')[0].value) ? d.value: 0;})
+												
+										 
+												.attr("x1", function(d) { return d.source.x; })
+												.attr("y1", function(d) { return d.source.y; })
+												.attr("x2", function(d) { return d.target.x; })
+												.attr("y2", function(d) { return d.target.y; });
+
+											var node = vis.selectAll("g.node")
+												.data(json.nodes)
+												.enter().append("svg:g")
+												.attr("class", "node")
+												.call(force.drag);
+												
+														
+											
+												
+												 node.append("svg:image")
+												.attr("class", "circle")
+												.attr("xlink:href", "http://ec2-175-41-179-225.ap-southeast-1.compute.amazonaws.com/images/node.png")
+												.attr("x", "-8px")
+												.attr("y", "-8px")
+												.attr("width", "16px")
+												.attr("height", "16px");
+												
+									
+										   
+
+												 node.append("svg:text")
+												.attr("class", "nodetext")
+												.attr("dx", 8)
+												.attr("dy", ".35em")
+												.text(function(d) { return d.name });
+												
+											
+
+											force.on("tick", function() {
+											  link.attr("x1", function(d) { return d.source.x; })
+												  .attr("y1", function(d) { return d.source.y; })
+												  .attr("x2", function(d) { return d.target.x; })
+												  .attr("y2", function(d) { return d.target.y; });
+
+											  node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+											});
+										});  */
+											
+									}
+
+										
+										var c = d3.scale.linear()
+										.domain([0, 1])
+										.range(["blue" , "red" ]);   //Scale all links between blue and red using this function that takes number between 0-1 and maps to colour inbetween b/r
+
+										var w = 860,
+											h = 500
+
+										var vis = d3.select("#FDG").append("svg:svg")
+											.attr("width", w)		 
+											.attr("height", h)
+											.attr("pointer-events", "all")     //Setup pointer events
+											.append('svg:g')  
+											.call(d3.behavior.zoom().on("zoom", redraw))
+											.append('svg:g');
+											
+											//Append a rectangle behind the g to recieve the mouse scroll events (otherwise only works over nodes/links
+											
+											vis.append('svg:rect')
+											.attr('width', w)
+											.attr('height', h)
+											.attr('fill', 'white');
+
+											//function that calls on zoom
+										  function redraw() 
+										  {
+											  console.log("here", d3.event.translate, d3.event.scale);
+											  vis.attr("transform",
+												  "translate(" + d3.event.translate + ")"
+												  + " scale(" + d3.event.scale + ")");
+											}
+											
+									
+
+											
+										//Other: adj3.json or huge.json
+										d3.json("adj3.json", function(json) {
+											var force = self.force = d3.layout.force()
+												.nodes(json.nodes)
+												.links(json.links)
+												.gravity(.05)												
+												.charge(-100)
+												.linkDistance(function(d) {return (40/(d.value+0.05));})
+												.linkStrength(function(d) {  return (Math.sqrt(d.value))/3;})
+													 
+												.size([w, h])
+												.start();
+
+											var link = vis.selectAll("line.link")
+												.data(json.links)
+												.enter().append("svg:line")
+												.attr("class", "link")
+												.style("stroke", function(d) { return c(d.nonlin); })
+												.style("stroke-width", function(d) { return Math.sqrt(d.value)*4; })
+												.style("stroke-opacity", function(d) { return d.value; })
+												
+												.attr("x1", function(d) { return d.source.x; })
+												.attr("y1", function(d) { return d.source.y; })
+												.attr("x2", function(d) { return d.target.x; })
+												.attr("y2", function(d) { return d.target.y; });
+
+											var node = vis.selectAll("g.node")
+												.data(json.nodes)
+												.enter().append("svg:g")
+												.attr("class", "node")
+												.call(force.drag);
+												
+												var node_drag = d3.behavior.drag()
+													.on("dragstart", dragstart)
+													.on("drag", dragmove)
+													.on("dragend", dragend);
+
+												function dragstart(d, i) {
+													force.stop() // stops the force auto positioning before you start dragging
+												}
+
+												function dragmove(d, i) {
+													d.px += d3.event.dx;
+													d.py += d3.event.dy;
+													d.x += d3.event.dx;
+													d.y += d3.event.dy; 
+													tick(); // this is the key to make it work together with updating both px,py,x,y on d !
+												}
+
+												function dragend(d, i) {
+													d.fixed = true; // of course set the node to fixed so the force doesn't include the node in its auto positioning stuff
+													tick();
+													force.resume();
+												}
+												
+												
+												 node.append("svg:image")
+												.attr("class", "circle")
+												.attr("xlink:href", "http://ec2-175-41-179-225.ap-southeast-1.compute.amazonaws.com/images/node.png")
+												.attr("x", "-8px")
+												.attr("y", "-8px")
+												.attr("width", "16px")
+												.attr("height", "16px");
+												
+												/* var node = vis.selectAll("circle.node")
+												.data(json.nodes)
+												.enter().append("circle")
+												.attr("class", "node")
+												.attr("r", 5)
+												.style("fill", function(d) { return color(d.group); })  
+												.call(force.drag); */
+
+										   
+
+												 node.append("svg:text")
+												.attr("class", "nodetext")
+												.attr("dx", 8)
+												.attr("dy", ".35em")
+												.text(function(d) { return d.name });
+												
+											
+
+											force.on("tick", function() {
+											  link.attr("x1", function(d) { return d.source.x; })
+												  .attr("y1", function(d) { return d.source.y; })
+												  .attr("x2", function(d) { return d.target.x; })
+												  .attr("y2", function(d) { return d.target.y; });
+
+											  node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+											});
+										});
+										
+							
+
+										</script>
+										
+											
+											
+										
+										
+										<br />
+										<br />
+										<aside style="margin-top:80px;">
+										    <h2>Settings</h2>
+												&emsp;	&emsp;			
+											<br /> Threshold to draw links: <input name="threshold" type="text" /> 
+											
+											<br />
+											<br />
+											
+											
+											
+											 
+											  <br />
+												<br />
+												Link Distance: <input type="range" name ="distance" min="5" max="500" value="40" step="1" onchange="showValueL(this.value)" />
+												<span id="rangeDist">40</span>
+												<script type="text/javascript">
+												function showValueL(newValue)
+												{
+													document.getElementById("rangeDist").innerHTML=newValue;
+												}
+												</script>
+												
+												&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+											 	 Gravity: <input type="range"  name ="gravity" min="0.001" max="0.2" value="0.05" step="0.01" onchange="showValueG(this.value)" />
+												<span id="rangeGrav">0.05</span>
+												<script type="text/javascript">
+												function showValueG(newValue)
+												{
+													document.getElementById("rangeGrav").innerHTML=newValue;
+												}
+												</script>
+												&nbsp;&nbsp;&nbsp;&nbsp;
+											  Link Strength divisor: <input type="range" name ="strengthdiv" min="1" max="10" value="3" step="0.5" onchange="showValueD(this.value)" />
+												<span id="rangeDiv">3</span>
+												<script type="text/javascript">
+												function showValueD(newValue)
+												{
+													document.getElementById("rangeDiv").innerHTML=newValue;
+												}
+												</script>
+												<br />
+												<br />
+												  Repulsion Force: <input type="range" name ="charge" min="0" max="1000" value="100" step="1" onchange="showValueR(this.value)" />
+												<span id="rangeForce">100</span>
+												<script type="text/javascript">
+												function showValueR(newValue)
+												{
+													document.getElementById("rangeForce").innerHTML=newValue;
+												}
+												</script>
+												
+												 <input name="updateButton" type="button" value="Update" onclick="updateData()"/>.
+
+										</aside>
+										
+										<p align='center'>A force directed graph for your data has been generated above. <a href=''>What is a force directed graph?</a> <br />
+						
+										<a href='adj3.json'>Click here</a> to download the .json file from which this graph is generated. You can upload this .json file later to recreate this graph later by visiting <a href=''>this page.</a></p>
+										
+									</div>
+
+  
+							
+						
+							
+							</body>
+							</html>
+				

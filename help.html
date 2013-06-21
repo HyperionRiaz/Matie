@@ -1,0 +1,366 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title> Maatie | Help</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	
+	<!-- Stylesheets -->
+	<link rel="stylesheet" href="css/reset.css" />
+	<link rel="stylesheet" href="css/styles.css" />
+	
+	<!-- Scripts -->
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script>
+	
+	
+	
+	<script type="text/javascript">
+var toggleMenu = {
+	init : function(sContainerClass, sHiddenClass) {
+		if (!document.getElementById || !document.createTextNode) {return;} // Check for DOM support
+		var arrMenus = this.getElementsByClassName(document, 'ul', sContainerClass);
+		var arrSubMenus, oSubMenu, oLink;
+		for (var i = 0; i < arrMenus.length; i++) {
+			arrSubMenus = arrMenus[i].getElementsByTagName('ul');
+			for (var j = 0; j < arrSubMenus.length; j++) {
+				oSubMenu = arrSubMenus[j];
+				oLink = oSubMenu.parentNode.getElementsByTagName('a')[0];
+				oLink.onclick = function(){toggleMenu.toggle(this.parentNode.getElementsByTagName('ul')[0], sHiddenClass); return false;}
+				this.toggle(oSubMenu, sHiddenClass);
+			}
+		}
+	},
+	toggle : function(el, sHiddenClass) {
+		var oRegExp = new RegExp("(^|\\s)" + sHiddenClass + "(\\s|$)");
+		el.className = (oRegExp.test(el.className)) ? el.className.replace(oRegExp, '') : el.className + ' ' + sHiddenClass; // Add or remove the class name that hides the element
+	},
+/* addEvent function from http://www.quirksmode.org/blog/archives/2005/10/_and_the_winner_1.html */
+	addEvent : function(obj, type, fn) {
+		if (obj.addEventListener)
+			obj.addEventListener(type, fn, false);
+		else if (obj.attachEvent) {
+			obj["e"+type+fn] = fn;
+			obj[type+fn] = function() {obj["e"+type+fn](window.event);}
+			obj.attachEvent("on"+type, obj[type+fn]);
+		}
+	},
+/*
+Written by Jonathan Snook, http://www.snook.ca/jonathan
+Add-ons by Robert Nyman, http://www.robertnyman.com
+*/
+	getElementsByClassName : function(oElm, strTagName, strClassName){
+	    var arrElements = (strTagName == "*" && document.all)? document.all : oElm.getElementsByTagName(strTagName);
+	    var arrReturnElements = new Array();
+	    strClassName = strClassName.replace(/\-/g, "\\-");
+	    var oRegExp = new RegExp("(^|\\s)" + strClassName + "(\\s|$)");
+	    var oElement;
+	    for(var i=0; i<arrElements.length; i++){
+	        oElement = arrElements[i];      
+	        if(oRegExp.test(oElement.className)){
+	            arrReturnElements.push(oElement);
+	        }   
+	    }
+	    return (arrReturnElements)
+	}
+};
+toggleMenu.addEvent(window, 'load', function(){toggleMenu.init('menu','hidden');});
+</script>
+	<style>
+	
+			
+			#options {
+				width:800px;
+				margin:0px auto; /* Right and left margin widths set to "auto" */
+				 /* Counteract to IE5/Win Hack */
+				padding:15px;
+				border:1px solid #333;
+				background-color:#eee;
+				}
+				
+				
+				.menu,
+				.menu ul {
+				margin:0px auto;
+				margin:0;
+				padding:0;
+				list-style:none;
+				}
+				.menu {width:800px;}
+				.menu li {
+				margin:0;
+				padding:0;
+				margin-bottom:1px;
+				}
+				.menu a {
+				display:block;
+				padding:2px 5px;
+				color:#000;
+				background:#eee;
+				text-decoration:none;
+				}
+				.menu a:hover {background:#d9dcb0;}
+				.menu ul li {padding-left:15px;}
+				.menu ul a {background:#ced174;}
+				.hidden {display:none;}
+				</style>
+
+	
+</head>
+
+<body class="portfolio">
+
+	<div id="wrapper" class="container_12 clearfix">
+
+		<!-- Text Logo -->
+		<a href='index.html'><img align='left' width='234' height='45' style="padding-top:40px;padding-left:20px;" src='images/logo.png' ></a>
+		<!-- h1 id='logo' class='grid_4'>Maatie</h1 -->
+		
+		<!-- Navigation Menu -->
+		<ul id='navigation' class='grid_8'>
+			
+			<li><a href='contact.html'><span class='meta'>Get in touch</span><br />Contact us</a></li>
+			<li><a href='news.html'><span class='meta'>Citations</span><br />News</a></li>
+			<li><a href='help.html' class='current'><span class='meta'>Formatting</span><br />Help</a></li>
+				
+			<li><a href='about.html'><span class='meta'>The method</span><br />About</a></li>
+			<li><a href='index.html'><span class='meta'>Analyze data</span><br />Upload</a></li>
+			
+		</ul>
+		<div class="hr grid_12 clearfix">&nbsp;</div>
+			
+		<!-- Catch Line and Link -->
+			<h2 class="grid_12 caption clearfix">Some frequently asked <span>questions</span></h2>
+		
+		<div class="pr grid_12 clearfix">&nbsp;</div>
+		
+			<div class="grid_12">
+			
+			<h2 class="caption" style="text-align:center">General</h2>
+			
+			<div id='options'>
+			<h4 class="caption">What is the Maatie algorithm and what makes it different?</h4>
+			
+			<p>Formatting should require this and this. Click here to download some example data. You can use our editor to automatically fix your files/ </p>
+			
+			<h4 class="caption">How do I run the Maatie algorithm on my data?</h4>	
+			<p>Start of by uploading a .csv file. Then click process. Once the results are shown click visulize results. You can download graphs of your data and much more. You can download graphs of your data and much more.  You can download graphs of your data and much more.  </p>
+			
+			<h4 class="caption">How should I format my data?</h4>
+			
+			<p>Formatting should require this and this. Click here to download some example data. You can use our editor to automatically fix your files/ </p>
+			
+			</div>
+			
+			<br />
+			<br />
+			
+			<h2 class="caption" style="text-align:center">Visulizations</h2>
+			<div id='options'>
+				
+				<h4 class="caption">What type of visualizations are available to help me understand my data? </h4>
+					<p>.</p>
+
+				<h4 class="caption">How do I read this table? <the table outprint will have a link to this answer here> <will also put in a graphic with arrow to help derps, but text will be good also></h4>
+					<p>.</p>
+
+				<h4 class="caption">How do I read this Agraph?  <as above></h4>
+					<p>.</p>
+
+				<h4 class="caption">How do I read this Agram? <as above> </h4>
+						<p>.</p>
+
+				<h4 class="caption">May I download the graphics and use them?</h4>
+					<p>.</p>
+
+				<h4 class="caption">How did you make the graphics?</h4>
+					<p>.</p>
+					
+		    </div>
+			
+			<br />
+			<br />
+			
+			 <h2 class="caption" style="text-align:center">Other</h2>
+			
+			<div id='options'>
+				  
+				   
+				<h4 class="caption">How should I cite Maatie in my paper?</h4>
+					<p>.</p>
+
+				<h4 class="caption">How can I contact the researchers behind Maatie? </h4>
+					<p>.</p>
+
+				<h4 class="caption">Who sponsors Maatie?</h4>
+					<p>.</p>
+					
+			</div>
+			
+			<br />
+			<br />
+			
+			<h2 class="caption" style="text-align:center">Errors</h2>
+			
+			<div id='options'>
+			
+				<h4 class="caption">I get an error: 'The R script failed on your data' Why?  <this will happen on 2nd page> </h4>
+						<p>Learn to format </p>
+
+				<h4 class="caption">I get an error: 'Incorrect file type' what could be wrong? <this will happen on 1st page></h4>
+					 <p>It could be that you uploaded the wrong format OR some of your columns are wrong........etc <describe what would make the R function break on badly formatted data here, no its not just gonna throw if its the wrong format </p>
+
+				<h4 class="caption">I get error: 'Graph could not be generated'  <This will happen on 3rd page and can happen for each of the graph types></h4>
+			
+			</div>
+			
+			<br />
+			<br />
+				   
+				<h2 class="caption" style="text-align:center">Format of Input</h2>
+			<div id='options'>	
+				<h4 class="caption">What file types may I upload? </h4>
+				<p>.</p>
+
+
+				<h4 class="caption">How should my data be formatted inside the file I upload?</h4>
+						<p>.</p>
+
+				<h4 class="caption">Can you help me get the correct format? </h4>
+				
+				Sure use this tool : <link to tool> 
+		 </div>
+		 
+		 
+		 
+		 <ul class="menu">
+<li><a href="#">General</a>
+<ul>
+<li><div id='options'>
+			<h4 class="caption">What is the Maatie algorithm and what makes it different?</h4>
+			
+			<p>Formatting should require this and this. Click here to download some example data. You can use our editor to automatically fix your files/ </p>
+			
+			<h4 class="caption">How do I run the Maatie algorithm on my data?</h4>	
+			<p>Start of by uploading a .csv file. Then click process. Once the results are shown click visulize results. You can download graphs of your data and much more. You can download graphs of your data and much more.  You can download graphs of your data and much more.  </p>
+			
+			<h4 class="caption">How should I format my data?</h4>
+			
+			<p>Formatting should require this and this. Click here to download some example data. You can use our editor to automatically fix your files/ </p>
+			
+			</div></li>
+
+</ul>
+</li>
+<li><a href="#">Visulisations</a>
+<ul>
+<li><div id='options'>
+				
+				<h4 class="caption">What type of visualizations are available to help me understand my data? </h4>
+					<p>.</p>
+
+				<h4 class="caption">How do I read this table? <the table outprint will have a link to this answer here> <will also put in a graphic with arrow to help derps, but text will be good also></h4>
+					<p>.</p>
+
+				<h4 class="caption">How do I read this Agraph?  <as above></h4>
+					<p>.</p>
+
+				<h4 class="caption">How do I read this Agram? <as above> </h4>
+						<p>.</p>
+
+				<h4 class="caption">May I download the graphics and use them?</h4>
+					<p>.</p>
+
+				<h4 class="caption">How did you make the graphics?</h4>
+					<p>.</p>
+					
+		    </div></a></li>
+
+</ul>
+</li>
+<li><a href="#">Other</a>
+<ul>
+<li><div id='options'>
+				  
+				   
+				<h4 class="caption">How should I cite Maatie in my paper?</h4>
+					<p>.</p>
+
+				<h4 class="caption">How can I contact the researchers behind Maatie? </h4>
+					<p>.</p>
+
+				<h4 class="caption">Who sponsors Maatie?</h4>
+					<p>.</p>
+					
+			</div></li>
+
+</ul>
+</li>
+
+
+<li><a href="#">Errors</a>
+<ul>
+<li><div id='options'>
+			
+				<h4 class="caption">I get an error: 'The R script failed on your data' Why?  <this will happen on 2nd page> </h4>
+						<p>Learn to format </p>
+
+				<h4 class="caption">I get an error: 'Incorrect file type' what could be wrong? <this will happen on 1st page></h4>
+					 <p>It could be that you uploaded the wrong format OR some of your columns are wrong........etc <describe what would make the R function break on badly formatted data here, no its not just gonna throw if its the wrong format </p>
+
+				<h4 class="caption">I get error: 'Graph could not be generated'  <This will happen on 3rd page and can happen for each of the graph types></h4>
+			
+			</div></li>
+
+</ul>
+</li>
+
+
+<li><a href="#">Format of Input</a>
+<ul>
+<li><div id='options'>	
+				<h4 class="caption">What file types may I upload? </h4>
+				<p>.</p>
+
+
+				<h4 class="caption">How should my data be formatted inside the file I upload?</h4>
+						<p>.</p>
+
+				<h4 class="caption">Can you help me get the correct format? </h4>
+				
+				Sure use this tool : <link to tool> 
+		 </div></li>
+
+</ul>
+</li>
+
+
+
+</ul>
+
+		
+			</div>
+	
+		
+		
+			
+		
+	
+	
+		<div class="pr clearfix grid_12">&nbsp;</div>
+		
+	   <p align='center'>.<img src='images/help.png'></p>
+		
+	
+			
+		<div class="hr grid_12 clearfix">&nbsp;</div>
+		
+		<!-- Footer -->
+		<p class='grid_12 footer clearfix'>
+			<span class='float'><b>&copy; Website design by</b> <a href='http://www.rmoola.com'>Riaz Moola</a>, <b>Images by</b> <a href="http://alexanderblv.tumblr.com/">Alexander Bielovich</a>.</span>
+			<a class='float right' href='#'>top</a>
+		</p>
+		
+		
+	</div><!--end wrapper-->
+
+</body>
+</html>
